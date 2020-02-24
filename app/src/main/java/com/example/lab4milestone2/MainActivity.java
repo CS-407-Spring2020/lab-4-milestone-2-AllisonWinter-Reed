@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,15 +78,30 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(listAddresses.get(0).getThoroughfare() != null) {
-                    address +=
+                    address += listAddresses.get(0).getThoroughfare() + "\n";
+                }
+
+                if(listAddresses.get(0).getLocality() != null) {
+                    address += listAddresses.get(0).getLocality() + "\n";
+                }
+
+                if (listAddresses.get(0).getPostalCode() != null) {
+                    address += listAddresses.get(0).getPostalCode() + "\n";
+                }
+
+                if(listAddresses.get(0).getCountryName() != null) {
+                    address += listAddresses.get(0).getCountryName() + "\n";
                 }
 
             }
+
+            TextView addressTextView = (TextView) findViewById(R.id.address);
+            addressTextView.setText(address);
+        } catch(IOException e) {
+            e.printStackTrace();
         }
 
     }
-
-
 
 
     @Override
@@ -98,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
+                updateLocationInfo(location);
             }
 
             @Override
@@ -126,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (location != null) {
-            //added later
+            updateLocationInfo(location);
         }
     }
 
